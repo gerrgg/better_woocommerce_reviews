@@ -1,0 +1,10 @@
+.product-details{
+  border-bottom: 1px solid #eee;
+}
+.tiny-img{
+  max-width: 50px;
+  margin-right: 1rem;
+}
+.form-group{
+  margin-top: 1rem;
+}
