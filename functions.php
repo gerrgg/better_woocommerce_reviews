@@ -30,6 +30,7 @@ include plugin_dir_path( __FILE__ ) . "options.php";
 add_action( 'wp_enqueue_scripts', 'bwcr_enqueue' );
 function bwcr_enqueue(){
   wp_enqueue_style( 'bwcr-style', plugin_dir_url( __FILE__ ) . 'style.css', array(), filemtime(plugin_dir_path( __FILE__ ) . 'style.css'), false );
+  wp_enqueue_script( 'bwcr-script', plugin_dir_url( __FILE__ ) . 'script.js', array(), filemtime(plugin_dir_path( __FILE__ ) . 'script.js'), false );
   wp_enqueue_style( 'font-awe', 'https://use.fontawesome.com/releases/v5.6.3/css/all.css', array(),  '5.6.3', false );
 }
 

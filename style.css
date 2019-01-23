@@ -1,3 +1,10 @@
+#bwcr_create_form{
+  max-width: 768px;
+  margin: auto;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  padding: 0px 1rem;
+}
 .product-details{
   border-bottom: 1px solid #eee;
 }
@@ -7,4 +14,146 @@
 }
 .form-group{
   margin-top: 1rem;
+}
+
+.fa-star.fas{
+  color: #FFB700;
+}
+.form-check-inline{
+  display: flex;
+}
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.radio-inline{
+  position: relative;
+  max-width: 40%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.radio-inline input{
+  z-index: 2;
+}
+.radio-inline::before{
+  content: '';
+  position: absolute;
+  height: 1px;
+  width: calc(100% - 20px);
+  margin: 0 10px;
+  background-color: #D8D8D8;
+  top: calc(50% - 1px);
+  z-index: 1;
+}
+.radio-labels{
+  max-width: 40%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.radio-labels::before{
+  content: '';
+  position: absolute;
+  height: 1px;
+  width: calc(100% - 20px);
+  margin: 0 10px;
+  background-color: #D8D8D8;
+  top: calc(50% - 1px);
+  z-index: 1;
+}
+
+.radio-labels span{
+  z-index: 2;
+  background-color: #fff;
+}
+
+.notice-input{
+  border: 2px solid #eee !important;
+}
+
+.features{
+  border-bottom: 1px solid #eee;
+}
+
+.bwcr_product{
+  margin: 1rem 0;
+}
+
+.details{
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.form-style-underlined label{
+  margin: 0px;
+}
+
+.headline{
+  max-width: 60%;
+}
+.y-spacing-top-med{
+  margin-top: 1.7rem;
+}
+.y-spacing-bottom-xl{
+  margin-bottom: 2.5rem;
+}
+@media only screen and (max-width: 600px) {
+  #bwcr_create_form{
+    padding: 0px;
+  }
+  .radio-labels, .radio-inline{
+    max-width: 100%;
+  }
+
+  body.page-id-678 .site-content{
+    padding: 0px;
+  }
+
+  body.page-id-678 .main-page-wrapper{
+    background-color: #D5DBDB;
+    padding: 0px;
+    margin: 0px;
+  }
+  body.page-id-678 header{
+    margin: 0px;
+  }
+
+  .section{
+    background-color: #fff;
+    margin-bottom: 1px;
+    width: 100%;
+  }
+  .small-space{
+    margin-bottom: 1px;
+  }
+  .x-padding{
+    padding: .5rem 1.7rem;
+  }
+  h3{
+    display: none;
+  }
+  .headline{
+    max-width: 100%;
+  }
+  .media{
+    text-align: center;
+  }
+  input[type="file"] {
+    display: none;
+  }
+  #previewImage{
+    height: 100px;
+    width: 100px;
+  }
+  .custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+
 }
