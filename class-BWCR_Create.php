@@ -16,6 +16,7 @@ class BWCR_Create{
   public function get_form(){
     ?>
     <form id="bwcr_create_form" method="POST" action="<?php echo admin_url( 'admin-post.php' ) ?>" enctype="multipart/form-data" >
+      <?php $this->get_username(); ?>
       <?php foreach( $this->products as $product ) : ?>
         <div id="<?php echo $product['id'] ?>" class="bwcr_product">
           <?php //$this->get_media_html( $product ); ?>
@@ -25,8 +26,24 @@ class BWCR_Create{
           <?php $this->get_review_html( $product ); ?>
         </div>
       <?php endforeach; ?>
+      <input type="hidden" name="action" value="process_review">
       <button class="single_add_to_cart_button button alt" type="submit">Submit</button>
     </form>
+    <?php
+  }
+
+  public function get_username(){
+    $user = wp_get_current_user();
+    ?>
+    <div id="<?php echo $product['id']; ?>-details" class="details">
+      <div class="section x-padding">
+        <div class="section y-spacing-top-med y-spacing-bottom-xl">
+          <div class="d-flex align-items-center">
+            <input type="text" name="username" class="form-control" value="<?php echo $user->display_name ?>" placeholder="Your name here" required />
+          </div>
+        </div>
+      </div>
+    </div>
     <?php
   }
 
@@ -56,7 +73,7 @@ class BWCR_Create{
         <span class="<?php echo $product['id']?> far fa-star fa-2x star-3" data-rating="3"></span>
         <span class="<?php echo $product['id']?> far fa-star fa-2x star-4" data-rating="4"></span>
         <span class="<?php echo $product['id']?> far fa-star fa-2x star-5" data-rating="5"></span>
-        <input id="<?php echo $product['id'] ?>-rating" type="hidden" />
+        <input id="<?php echo $product['id'] ?>-rating" type="hidden" name="<?php echo $product['id']?>[rating]" value="0" />
       </div>
       <?php
     }
@@ -69,11 +86,11 @@ class BWCR_Create{
             <h3>Rate Features</h3>
             <p>How does this product fit?<span id="<?php echo $product['id']; ?>-radio-awnser"></span></p>
             <div class="d-flex radio-inline form-group">
-              <input type="radio" class="radio-awnser" value="Too small" name="<?php echo $product['id']; ?>-fit" />
-              <input type="radio" class="radio-awnser" value="Somewhat small" name="<?php echo $product['id']; ?>-fit" />
-              <input type="radio" class="radio-awnser" value="Fit as expected" name="<?php echo $product['id']; ?>-fit" />
-              <input type="radio" class="radio-awnser" value="Somewhat large" name="<?php echo $product['id']; ?>-fit" />
-              <input type="radio" class="radio-awnser" value="Too large" name="<?php echo $product['id']; ?>-fit" />
+              <input type="radio" class="radio-awnser" value="Too small" name="<?php echo $product['id']?>[fit]" />
+              <input type="radio" class="radio-awnser" value="Somewhat small" name="<?php echo $product['id']?>[fit]" />
+              <input type="radio" class="radio-awnser" value="Fit as expected" name="<?php echo $product['id']?>[fit]" />
+              <input type="radio" class="radio-awnser" value="Somewhat large" name="<?php echo $product['id']?>[fit]" />
+              <input type="radio" class="radio-awnser" value="Too large" name="<?php echo $product['id']?>[fit]" />
             </div>
             <div class="radio-labels">
               <span style="text-align: left">Too Small</span>
@@ -111,7 +128,7 @@ class BWCR_Create{
           <div class="section y-spacing-top-med y-spacing-bottom-xl">
           <h3>Add a headline</h3>
           <label>Whats the most important thing to know?</label>
-          <input class="notice-input form-control" type="text" name="<?php echo $product['id']; ?>-headline">
+          <input class="notice-input form-control" type="text" name="<?php echo $product['id']?>[headline]">
         </div>
       </div>
     </div>
@@ -125,7 +142,7 @@ class BWCR_Create{
           <div class="section y-spacing-top-med y-spacing-bottom-xl">
           <h3>Write your review</h3>
           <label>What did you like or dislike? What did you use this product for?</label>
-          <textarea class="notice-input" name="<?php echo $product['id']; ?>-review" ></textarea>
+          <textarea class="notice-input" name="<?php echo $product['id']?>[review]" ></textarea>
         </div>
       </div>
     </div>
