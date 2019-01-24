@@ -59,10 +59,9 @@
   content: '';
   position: absolute;
   height: 1px;
-  width: calc(100% - 20px);
-  margin: 0 10px;
-  background-color: #D8D8D8;
-  top: calc(50% - 1px);
+  width: 100%;
+  border-bottom: 1px dashed #D5DBDB;
+  top: 10px;
   z-index: 1;
 }
 
