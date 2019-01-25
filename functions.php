@@ -22,7 +22,15 @@ GNU General Public License for more details.
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 // runs the show
-include plugin_dir_path( __FILE__ ) . "class-BWCR.php";
+include plugin_dir_path( __FILE__ ) . "inc/class-BWCR.php";
+include plugin_dir_path( __FILE__ ) . "options.php";
+include plugin_dir_path( __FILE__ ) . "inc/class-BWCR_Create.php";
+echo plugin_dir_path( __FILE__ ) . 'comments.php';
+
+// https://wordpress.stackexchange.com/questions/249132/override-comments-php-template-with-plugin
+add_filter( 'comments_template', function( $template ) {
+  return plugin_dir_path( __FILE__ ) . 'comments.php';
+}, 1000 );
 
 // alter comments table
 register_activation_hook( __FILE__, 'bwcr_install' );
