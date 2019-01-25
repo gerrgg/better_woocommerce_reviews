@@ -82,7 +82,7 @@ function bwcr_process_review(){
       // bwcr_process_the_ratings( $key, $data );
     }
   }
-  // wp_redirect( '/review?p_ids=' . impode( ',', $items_reviewed ) . '&action=thankyou' );
+  wp_redirect( '/review?p_ids=' . implode( ',', $items_reviewed ) . '&action=thankyou' );
 }
 //https://stackoverflow.com/questions/52122275/add-a-product-review-with-ratings-programmatically-in-woocommerce
 function bwcr_insert_comment( $key, $data ){
@@ -114,12 +114,12 @@ function bwcr_insert_comment( $key, $data ){
 
 function bwcr_create_review_form(){
   if( isset( $_GET['p_ids'], $_GET['action'] ) ){
+    $form = new BWCR_Create( explode( ',', $_GET['p_ids'] ) );
     if( $_GET['action'] == 'create' ){
-      $form = new BWCR_Create( explode( ',', $_GET['p_ids'] ) );
       $form->get_form();
     }
     if( $_GET['action'] == 'thankyou' ){
-
+      $form->thank_you();
     }
   }
 }

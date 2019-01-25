@@ -32,8 +32,74 @@ class BWCR_Create{
     <?php
   }
 
+  public function create_review_url( $ids ){
+    if( sizeof($ids) > 1 ) $ids = implode(',', $ids);
+    return home_url() .'/review/?p_ids=' . $ids . '&action=create';
+  }
+
   public function thank_you(){
-    
+    // leave notice
+    wc_add_notice( 'Review submitted - Thank You!<br> We’re processing your review. This may take several days, so we appreciate your patience. We’ll notify you when this is complete.', 'success' );
+    wc_print_notices();
+
+    // get user info
+    $user = new WC_Customer( get_current_user_id() );
+    $other_products = array();
+
+    // get all orders customer has put in
+    $customer_orders = get_posts( array(
+        'numberposts' => -1,
+        'meta_key'    => '_customer_user',
+        'meta_value'  => get_current_user_id(),
+        'post_type'   => wc_get_order_types(),
+        'post_status' => array_keys( wc_get_order_statuses() ),  //'post_status' => array('wc-completed', 'wc-processing'),
+    ) );
+
+    //
+    foreach( $customer_orders as $order ){
+
+      // make the order
+      $wc_order = wc_get_order( $order->ID );
+      if( ! empty( $wc_order ) ){
+
+        // get the items on the order
+        $items = $wc_order->get_items();
+
+        // collect the id of every item on the order
+        foreach( $items as $item ){
+          $id = ( $item->get_variation_id() == '0' ) ? $item->get_product_id() : $item->get_variation_id();
+          array_push( $other_products, $id );
+        }
+      }
+    }
+
+
+    ?>
+    <div class="section p-1">
+      <h1>Review your other purchases</h1>
+      <div class="row">
+        <?php
+        foreach( $other_products as $product_id ) :
+          $product = wc_get_product( $product_id );
+          if( !empty( $product ) ){
+            ?>
+              <div class="col-12 col-sm-4 text-center">
+                <a class="link-normal product-image-link" href="<?php echo $this->create_review_url( $product_id ); ?>">
+                  <?php echo $product->get_image( '' ); ?>
+                </a>
+                <a class="link-normal" href="<?php echo $this->create_review_url( $product_id ); ?>">
+                <p><?php echo $product->get_name(); ?></p>
+                </a>
+                <?php $this->get_star_rating_html( $product_id, 'product', 'thankyou' ); ?>
+              </div>
+            <?php
+          }
+        endforeach;
+        ?>
+
+      </div>
+    </div>
+    <?php
   }
 
   public function get_username(){
@@ -43,6 +109,7 @@ class BWCR_Create{
       <div class="section x-padding">
         <div class="section y-spacing-top-med y-spacing-bottom-xl">
           <div class="d-flex align-items-center">
+            <label>Name: </label>
             <input type="text" name="username" class="form-control" value="<?php echo $user->display_name ?>" placeholder="Your name here" required />
           </div>
         </div>
@@ -77,19 +144,28 @@ class BWCR_Create{
       $this->$func_to_call( $product, $feature );
     }
 
-    public function get_star_rating_html( $product, $feature ){
+    public function get_star_rating_html( $product, $feature = 'product', $referer = 'create' ){
+      // backwards campatiblility
+      $p_id = ( sizeof( $product ) == 1 ) ? $product : $product['id'];
       ?>
-      <div data-product-id="<?php echo $product['id']?>" data-feature="<?php echo $feature; ?>">
+      <div data-product-id="<?php echo $p_id?>" data-feature="<?php echo $feature; ?>">
         <?php if( $feature != 'product' ) echo "<h4 class='feature-header'>$feature</h4>"; ?>
-        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-1" data-rating="1"></span>
-        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-2" data-rating="2"></span>
-        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-3" data-rating="3"></span>
-        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-4" data-rating="4"></span>
-        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-5" data-rating="5"></span>
-        <input id="<?php echo $product['id'] . '-' . $feature ?>" type="hidden" name="<?php echo $product['id'] . '[' . $feature; ?>]" value="0" />
+        <?php $this->create_the_stars( $p_id, $feature, $referer ); ?>
+        <input id="<?php echo $p_id . '-' . $feature ?>" type="hidden" name="<?php echo $p_id . '[' . $feature; ?>]" value="0" />
       </div>
       <?php
     }
+
+    public function create_the_stars( $p_id, $feature, $referer = 'create' ){
+      for( $i = 1; $i <= 5; $i++ ){
+        if( $referer == 'thankyou' ) : ?>
+          <a class="link-normal" href="<?php echo $this->create_review_url( $p_id ) . '&star=' . $i ?>">
+        <?php endif; ?>
+        <span class="<?php echo $p_id . '-' . $feature; ?> far fa-star fa-2x star-<?php echo $i; ?>" data-rating="<?php echo $i; ?>"></span>
+        <?php if( $feature == 'thankyou' ) echo '</a>';
+      }
+    }
+
     public function get_radio_rating_html( $product, $feature ){
       ?>
 

@@ -102,10 +102,13 @@
 .y-spacing-bottom-xl{
   margin-bottom: 2.5rem;
 }
+.feature-header{
+  margin: .5rem 0px;
+}
+a.link-normal{
+  color: unset!important;
+}
 @media only screen and (max-width: 600px) {
-  .feature-header{
-    margin-top: .5rem;
-  }
   #bwcr_create_form{
     padding: 0px;
   }
