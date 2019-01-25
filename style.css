@@ -5,6 +5,7 @@
   border-right: 1px solid #eee;
   padding: 0px 1rem;
 }
+
 .product-details{
   border-bottom: 1px solid #eee;
 }
@@ -53,6 +54,7 @@
   display: flex;
   justify-content: space-between;
   position: relative;
+  margin-bottom: 1rem;
 }
 
 .radio-labels::before{
@@ -101,6 +103,9 @@
   margin-bottom: 2.5rem;
 }
 @media only screen and (max-width: 600px) {
+  .feature-header{
+    margin-top: .5rem;
+  }
   #bwcr_create_form{
     padding: 0px;
   }

@@ -32,6 +32,10 @@ class BWCR_Create{
     <?php
   }
 
+  public function thank_you(){
+    
+  }
+
   public function get_username(){
     $user = wp_get_current_user();
     ?>
@@ -64,16 +68,43 @@ class BWCR_Create{
     </div>
     <?php
   }
+    /*
+    * This function used to dispaly start rating systems
+    * $feature - is the word the user is evaluating, can be 'Durability', 'Fit', 'Comfort', etc.
+    */
+    public function get_rating_html( $product, $feature = 'product', $type = 'star' ){
+      $func_to_call = 'get_' . $type . '_rating_html';
+      $this->$func_to_call( $product, $feature );
+    }
 
-    public function get_rating_html( $product ){
+    public function get_star_rating_html( $product, $feature ){
       ?>
-      <div id="<?php echo $product['id']; ?>-overall-rating" data-product-id="<?php echo $product['id']?>" class="">
-        <span class="<?php echo $product['id']?> far fa-star fa-2x star-1" data-rating="1"></span>
-        <span class="<?php echo $product['id']?> far fa-star fa-2x star-2" data-rating="2"></span>
-        <span class="<?php echo $product['id']?> far fa-star fa-2x star-3" data-rating="3"></span>
-        <span class="<?php echo $product['id']?> far fa-star fa-2x star-4" data-rating="4"></span>
-        <span class="<?php echo $product['id']?> far fa-star fa-2x star-5" data-rating="5"></span>
-        <input id="<?php echo $product['id'] ?>-rating" type="hidden" name="<?php echo $product['id']?>[rating]" value="0" />
+      <div data-product-id="<?php echo $product['id']?>" data-feature="<?php echo $feature; ?>">
+        <?php if( $feature != 'product' ) echo "<h4 class='feature-header'>$feature</h4>"; ?>
+        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-1" data-rating="1"></span>
+        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-2" data-rating="2"></span>
+        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-3" data-rating="3"></span>
+        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-4" data-rating="4"></span>
+        <span class="<?php echo $product['id'] . '-' . $feature;?> far fa-star fa-2x star-5" data-rating="5"></span>
+        <input id="<?php echo $product['id'] . '-' . $feature ?>" type="hidden" name="<?php echo $product['id'] . '[' . $feature; ?>]" value="0" />
+      </div>
+      <?php
+    }
+    public function get_radio_rating_html( $product, $feature ){
+      ?>
+
+      <h4 class="feature-header"><?php echo $feature; ?></h4>
+      <div class="d-flex radio-inline form-group">
+        <input type="radio" class="radio-awnser" value="Too small" name="<?php echo $product['id'] . '[' . $feature . ']'; ?>" />
+        <input type="radio" class="radio-awnser" value="Somewhat small" name="<?php echo $product['id'] . '[' . $feature . ']'; ?>" />
+        <input type="radio" class="radio-awnser" value="Fit as expected" name="<?php echo $product['id'] . '[' . $feature . ']'; ?>" />
+        <input type="radio" class="radio-awnser" value="Somewhat large" name="<?php echo $product['id'] . '[' . $feature . ']'; ?>" />
+        <input type="radio" class="radio-awnser" value="Too large" name="<?php echo $product['id'] . '[' . $feature . ']'; ?>" />
+      </div>
+      <div class="radio-labels">
+        <span style="text-align: left">Too Small</span>
+        <span style="text-align: center">Fit as Expected</span>
+        <span style="text-align: right">Too Large</span>
       </div>
       <?php
     }
@@ -83,20 +114,12 @@ class BWCR_Create{
       <div id="<?php echo $product['id']; ?>-features">
         <div class="section x-padding">
           <div class="section y-spacing-top-med y-spacing-bottom-xl">
-            <h3>Rate Features</h3>
-            <p>How does this product fit?<span id="<?php echo $product['id']; ?>-radio-awnser"></span></p>
-            <div class="d-flex radio-inline form-group">
-              <input type="radio" class="radio-awnser" value="Too small" name="<?php echo $product['id']?>[fit]" />
-              <input type="radio" class="radio-awnser" value="Somewhat small" name="<?php echo $product['id']?>[fit]" />
-              <input type="radio" class="radio-awnser" value="Fit as expected" name="<?php echo $product['id']?>[fit]" />
-              <input type="radio" class="radio-awnser" value="Somewhat large" name="<?php echo $product['id']?>[fit]" />
-              <input type="radio" class="radio-awnser" value="Too large" name="<?php echo $product['id']?>[fit]" />
-            </div>
-            <div class="radio-labels">
-              <span style="text-align: left">Too Small</span>
-              <span style="text-align: center">Fit as Expected</span>
-              <span style="text-align: right">Too Large</span>
-            </div>
+            <?php
+              $this->get_radio_rating_html( $product, 'Fit' );
+              $this->get_star_rating_html( $product, 'Durability' );
+              $this->get_star_rating_html( $product, 'Comfort' );
+              $this->get_star_rating_html( $product, 'Value' );
+            ?>
           </div>
         </div>
       </div>
