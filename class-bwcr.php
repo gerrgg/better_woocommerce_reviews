@@ -7,8 +7,8 @@ class BWCR{
 
   function include_our_files(){
     // admin options
-    include plugin_dir_path( __FILE__ ) . "options.php";
-    include plugin_dir_path( __FILE__ ) . "class-BWCR_Create.php";
+    include plugin_dir_path( __FILE__ ) . "../options.php";
+    include plugin_dir_path( __FILE__ ) . "inc/class-BWCR_Create.php";
   }
 
 
